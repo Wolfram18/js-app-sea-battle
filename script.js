@@ -68,8 +68,8 @@ function drawGrid() {
     }
 
     //красная линия
-    context.lineWidth = 2
     context.strokeStyle ='red'
+    context.lineWidth = 2
 
     context.beginPath()
     context.moveTo(0, 75)

@@ -2,7 +2,10 @@
 function getMouse (element) {
     const mouse = {
         x: 0,
-        y: 0
+        y: 0,
+        s: false, //scrolling
+        left: false,
+        pLeft: false //при предыдущей итерациии игры
     }
 
     element.addEventListener('mousemove', function(event) {
@@ -14,6 +17,26 @@ function getMouse (element) {
         mouse.y = event.clientY - rect.top;
     })
 
+    //при прокрутке колёсика
+    element.addEventListener('wheel', function(event) {
+        mouse.s = !mouse.s
+    })
+
+    //нажатие на любую кнопку мыши
+    element.addEventListener('mousedown', function(event) {
+        //1 при прожатой левой кнопке мыши
+        if (event.buttons === 1) {
+            mouse.left = true
+        }
+    })
+
+    //при отпускании кнопки мыши
+    element.addEventListener('mouseup', function(event) {
+        //при отжатой левой кнопке мыши
+        if (event.buttons !== 1) {
+            mouse.left = false
+        }
+    })
+
     return mouse
 }
-
