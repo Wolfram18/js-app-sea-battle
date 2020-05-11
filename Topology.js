@@ -235,18 +235,13 @@ class Topology {
         }
 
         //пока ничего нет на поле - корабль можно поставить в любое место
-        const map = [
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true],
-            [true, true, true, true, true, true, true, true, true, true]
-        ]
+        const map = []
+        for (let i = 0; i < 10; i++) {
+            map[i] = []
+            for (let j = 0; j < 10; j++) {
+                map[i][j] = true
+            }
+        }
 
         //если на поле стоит корабль, то все его клетки и все клетко вокруг него становятся false
         for (const sheep of this.sheeps) {
@@ -327,18 +322,13 @@ class Topology {
 
         //добавляем возможность ранения
         //формируем карту кораблей
-        const map = [
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false, false, false, false]
-        ]
+        const map = []
+        for (let i = 0; i < 10; i++) {
+            map[i] = []
+            for (let j = 0; j < 10; j++) {
+                map[i][j] = false
+            }
+        }
 
         //ставим true, где стоит корабль
         for (const sheep of this.sheeps) {

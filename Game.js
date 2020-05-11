@@ -49,6 +49,11 @@ class Game {
             this.tickPlay(timestamp)
         }
 
+        //если идет стадия завершения, то выхывается функция завершения
+        if (this.stage = "completion") {
+            this.tickCompletion(timestamp)
+        }
+
         //для отслеживания нажатия клавиши
         mouse.pleft = mouse.left
     }
@@ -111,8 +116,6 @@ class Game {
                 this.computer.update()
                 //передаём ход
                 this.playerOrder = false
-
-                //ВЫВОДТЕКСТА
             }
         }
 
@@ -124,15 +127,15 @@ class Game {
                 y: Math.floor(Math.random() *10)
             }
 
-            //ЗАДЕРЖКА
-
             this.player.addChecks(point)
             //логика добавления точки
             this.player.update()
             //передаём ход
             this.playerOrder = true
-
-            //ВЫВОДТЕКСТА
         }
+    }
+
+    tickCompletion (timestamp) {
+        
     }
 }
