@@ -19,8 +19,8 @@ class Game {
         //вынести в команду
         this.computer.randoming()
         //if нажали кнопку рандом то
-        this.player.randoming()
-        this.stage = "play"
+        //this.player.randoming()
+        //this.stage = "play"
 
         //регистрирует вызов функции перед обновлением экрана
         requestAnimationFrame(x => this.tick(x))
@@ -33,34 +33,39 @@ class Game {
         //60 раз в секунду обновлять canvas и заново рисовать drawGrid
         clearCanvas()
         drawGrid()
+        btnRandom.draw(); //Кнопка
 
         //отрисовка поля, кораблей и выстрелов игрока и бота
         this.player.draw(context)
         this.computer.draw(context)
 
-
         //если идет стадия подготовки, то выхывается функция расстановки кораблей
-        if (this.stage = "preparation") {
+        if (this.stage === "preparation") {
             this.tickPreparation(timestamp)
         }
 
         //если идет стадия игры, то выхывается функция игры
-        if (this.stage = "play") {
+        else if (this.stage === "play") {
             this.tickPlay(timestamp)
+
+            if (this.computer.isEnd()) {
+                this.stage = 'end'
+                alert('Поздаравляю с победой!')
+            }
+    
+            else if (this.player.isEnd()) {
+                this.stage = 'end'
+                alert('Увы, попробуй еще раз.')
+            }
         }
 
         //если идет стадия завершения, то выхывается функция завершения
-        if (this.stage = "completion") {
+        /*if (this.stage === "completion") {
             this.tickCompletion(timestamp)
-        }
+        }*/
 
         //для отслеживания нажатия клавиши
         mouse.pleft = mouse.left
-
-        //проверка на конец игры
-        if (this.computer.isEnd() || this.player.isEnd()) {
-            this.stage = "completion"
-        }
     }
 
     //стадия расстановки кораблей
@@ -97,13 +102,15 @@ class Game {
 
             //проверяем, что выставили все корабли
             if (this.player.sheeps.length === 10) {
-                this.stage === "play"
+                this.stage = "play"
             }
         }
     }
 
     //стадия игры
     tickPlay (timestamp) {
+        canvas.removeEventListener("mousedown", func) //Кнопка
+
         //Логика игрока
         if (this.playerOrder) {
             //если мышь над полем бота
@@ -116,7 +123,7 @@ class Game {
 
             //добавить выстрел, если нажали левую кнопку мыши
             if (mouse.left && !mouse.pleft) {
-                //нельзя стрелять в одно и тоже место
+                //нельзя стрелять в одну и ту же клетку
                 if (!this.computer.isChecked(point)) {
 
                     this.computer.addChecks(point)
@@ -163,14 +170,6 @@ class Game {
     }
 
     tickCompletion (timestamp) {
-
-        if (this.computer.isEnd()) {
-            alert('WIN')
-        }
-
-        if (this.player.isEnd()) {
-            alert('LOSE')
-        }
-
+        
     }
 }

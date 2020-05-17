@@ -83,3 +83,48 @@ function getRandomFrom (array) {
     const index = Math.floor(Math.random() * array.length)
     return array[index]
 }
+
+//Один рандом
+var btnRandom = {
+    x:100,
+    y:430,
+    w:100,
+    h:35,
+    text:"Random",
+    state:"default",
+
+    draw: function() {
+        context.font = "20px Arial ";
+        switch(this.state) {
+            case "over":      
+                context.fillStyle = "darkblue";
+                context.fillRect(this.x, this.y, this.w, this.h);
+                context.fillStyle = "white";
+                context.fillText("Random",this.x+this.w/2 - context.measureText("Random").width/2,this.y+this.h/2+10 );
+            break;
+            default:
+                context.fillStyle = "blue";
+                context.fillRect(this.x,this.y,this.w,this.h);
+                context.fillStyle = "white";
+                context.fillText("Random",this.x+this.w/2 - context.measureText("Random").width/2,this.y+this.h/2+10 );
+        }    
+    }
+};
+
+function func(event) {
+    if(checkCollision(event.offsetX, event.offsetY, btnRandom )) {
+        game.player.randoming()
+        game.stage = "play"
+    }
+}
+canvas.addEventListener("mousedown", func, false);
+
+canvas.addEventListener("mousemove", function(e) {
+    btnRandom.state = checkCollision(e.offsetX, e.offsetY, btnRandom)?"over":"def"
+    btnRandom.draw()
+}, false);
+
+//Проверяет входит ли точка в  прямоугольник
+function checkCollision(x, y, obj) {
+    return x >= obj.x && x <= obj.x + obj.w && y >= obj.y && y <= obj.y + obj.h 
+}

@@ -120,7 +120,8 @@ class Topology {
 
         context.textAlign = "center"
         context.font = "20px comics sans"
-
+        context.fillStyle = "black";
+        
         //буквы
         const alphabet = "АБВГДЕЖЗИК"
         for(let i = 0; i < 10; i++) {
