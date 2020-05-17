@@ -56,6 +56,11 @@ class Game {
 
         //для отслеживания нажатия клавиши
         mouse.pleft = mouse.left
+
+        //проверка на конец игры
+        if (this.computer.isEnd() || this.player.isEnd()) {
+            this.stage = "completion"
+        }
     }
 
     //стадия расстановки кораблей
@@ -111,14 +116,21 @@ class Game {
 
             //добавить выстрел, если нажали левую кнопку мыши
             if (mouse.left && !mouse.pleft) {
-                this.computer.addChecks(point)
-                //логика добавления точки
-                this.computer.update()
+                //нельзя стрелять в одно и тоже место
+                if (!this.computer.isChecked(point)) {
 
-                //проверяем был ли выстрел в корабль или нет
-                if (!this.computer.isSheepUnderPoint(point)) {
-                    //передаём ход
-                    this.playerOrder = false
+                    this.computer.addChecks(point)
+                    //добавляем последний ход
+                    this.computer.addThelast(point)
+        
+                    //логика добавления точки
+                    this.computer.update()
+        
+                    //проверяем был ли выстрел в корабль или нет
+                    if (!this.computer.isSheepUnderPoint(point)) {
+                        //передаём ход
+                        this.playerOrder = false
+                    }
                 }
             }
         }
@@ -135,6 +147,9 @@ class Game {
             const point = getRandomFrom(this.player.getUnknownFields())
 
             this.player.addChecks(point)
+            //добавляем последний ход
+            this.player.addThelast(point)
+
             //логика добавления точки
             this.player.update()
 
@@ -148,6 +163,14 @@ class Game {
     }
 
     tickCompletion (timestamp) {
-        
+
+        if (this.computer.isEnd()) {
+            alert('WIN')
+        }
+
+        if (this.player.isEnd()) {
+            alert('LOSE')
+        }
+
     }
 }

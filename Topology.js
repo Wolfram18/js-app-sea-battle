@@ -10,6 +10,7 @@ class Topology {
         this.checks = []
         this.kills = []
         this.injuries = []
+        this.last = {}
     }
 
     //добавление кораблей
@@ -38,7 +39,22 @@ class Topology {
         return this
     }
 
-    //отрисовка поля, кораблей, точек и ранений
+    //проверяем не был ли ранее добавлен данный выстрел
+    isChecked(point) {
+        const flag = this.checks.find(check => check.x === point.x && check.y === point.y)
+        if (flag) {
+            return true
+        } 
+        return false
+    }
+
+    //добавление последнего хода
+    addThelast(last) {
+        this.last = last
+        return this
+    }
+
+    //отрисовка поля, кораблей, точек, ранений и последнего хода
     draw (context) {
         this.drawFields(context)
 
@@ -57,6 +73,8 @@ class Topology {
         for(const injury of this.injuries) {
             this.drawInjury(context, injury)
         }
+
+        this.drawLast(context, this.last)
 
         return this
     }
@@ -166,24 +184,80 @@ class Topology {
         //первая линия
         context.beginPath()
         context.moveTo(
-            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE, //координата центра по x
-            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE, //координата центра по y
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE + 1.5, //координата центра по x
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE + 1.5, //координата центра по y
         )
         context.lineTo(
-            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE * 2, //координата центра по x
-            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE * 2, //координата центра по y
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE * 2 - 1.5, //координата центра по x
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE * 2 - 1.5, //координата центра по y
         )
         context.stroke()
 
         //вторая линия
         context.beginPath()
         context.moveTo(
-            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE *2, //координата центра по x
-            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE, //координата центра по y
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE *2 - 1.5, //координата центра по x
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE + 1.5, //координата центра по y
         )
         context.lineTo(
-            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE, //координата центра по x
-            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE * 2, //координата центра по y
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE + 1.5, //координата центра по x
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE * 2 - 1.5, //координата центра по y
+        )
+        context.stroke()
+
+        return this
+    }
+
+    //рисование последнего хода
+    drawLast(context, last) {
+        context.strokeStyle = 'green'
+        context.lineWidth = 2.5
+
+        //первая линия (лево)
+        context.beginPath()
+        context.moveTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE + 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE + 1, //координата центра по y
+        )
+        context.lineTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE + 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE * 2 - 1, //координата центра по y
+        )
+        context.stroke()
+
+        //вторая линия (право)
+        context.beginPath()
+        context.moveTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE * 2 - 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE + 1, //координата центра по y
+        )
+        context.lineTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE * 2 - 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE * 2 - 1, //координата центра по y
+        )
+        context.stroke()
+
+        //третья линия (верх)
+        context.beginPath()
+        context.moveTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE * 2 - 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE + 2, //координата центра по y
+        )
+        context.lineTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE + 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE + 2, //координата центра по y
+        )
+        context.stroke()
+
+        //четвёртая линия (низ)
+        context.beginPath()
+        context.moveTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE + 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE * 2 - 2, //координата центра по y
+        )
+        context.lineTo(
+            this.offsetX + last.x * FIELD_SIZE + FIELD_SIZE * 2 - 2, //координата центра по x
+            this.offsetY + last.y * FIELD_SIZE + FIELD_SIZE * 2 - 2, //координата центра по y
         )
         context.stroke()
 
@@ -410,5 +484,25 @@ class Topology {
         }
 
         return unknownFields
+    }
+
+    //проверяет убиты ли все корабли
+    isEnd() {
+        //карта кораблей
+        const map = this.getSheepsMap()
+
+        //делаем false все клетки с ранениями
+        for (const injury of this.injuries) {
+            map[injury.y][injury.x] = false
+        }
+
+        //ищем хоть один true
+        for (let status of map.flat()) {
+            if (status) {
+                return false
+            }
+        }
+
+        return true
     }
 }
