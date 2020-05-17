@@ -321,6 +321,23 @@ class Topology {
             .map(check => JSON.parse(check))
 
         //добавляем возможность ранения
+
+        //карта кораблей
+        const map = this.getSheepsMap()
+        
+        //проверяем, является ли точка, которую ранили - положением корабля
+        for (const check of this.checks) {
+            if (map[check.y][check.x]) {
+                this.injuries.push(check)
+
+                const index = this.checks.indexOf(check)
+                this.checks.splice(index, 1)
+            }
+        }
+
+    }
+
+    getSheepsMap () {
         //формируем карту кораблей
         const map = []
         for (let i = 0; i < 10; i++) {
@@ -347,17 +364,51 @@ class Topology {
                 }
             }
         }
-        
-        //проверяем, является ли точка, которую ранили - положением корабля
-        for (const check of this.checks) {
-            if (map[check.y][check.x]) {
-                this.injuries.push(check)
 
-                const index = this.checks.indexOf(check)
-                this.checks.splice(index, 1)
+        return map
+    }
+
+    //возвращаем true, если в ячейке стоит корабль
+    isSheepUnderPoint (point) {
+        //карта кораблей
+        const map = this.getSheepsMap()
+
+        return map[point.y][point.x]
+    }
+
+    //проверяем был ли выстрел по клетке
+    getUnknownFields () {
+        const unknownFields = []
+
+        for (let y = 0; y < 10; y++) {
+            for (let x = 0; x < 10; x++) {
+                //неизвестная клетка
+                let flag = true
+                //проходим по всем клеткам c выстрелами
+                for (const check of this.checks) {
+                    if (check.x === x && check.y === y) {
+                        flag = false
+                        break
+                    }
+                }
+
+                //если флаг не опущен, проходим по всем раненым клеткам
+                if (flag) {
+                    for (const injury of this.injuries) {
+                        if (injury.x === x && injury.y === y) {
+                            flag = false
+                            break
+                        }
+                    }
+                }
+
+                //если фаг до сих пор не опущен, то добавляем эту клетку в неиследованные
+                if (flag) {
+                    unknownFields.push({ x, y })
+                }
             }
         }
 
+        return unknownFields
     }
-
 }

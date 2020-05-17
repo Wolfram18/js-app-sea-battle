@@ -76,3 +76,10 @@ function drawGrid() {
     context.lineTo(canvas.width, 75)
     context.stroke()
 }
+
+//возвращает случайный элемент из массива
+//для БОТА
+function getRandomFrom (array) {
+    const index = Math.floor(Math.random() * array.length)
+    return array[index]
+}

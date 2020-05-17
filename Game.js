@@ -111,27 +111,39 @@ class Game {
 
             //добавить выстрел, если нажали левую кнопку мыши
             if (mouse.left && !mouse.pleft) {
-                this.computer.addChecks(point) //ЗАМЕНИТЬ НА GETPOINTSTATUS ДЛЯ ПРОДОЛЖЕНИЯ ХОДОВ
-                //логика добавления точки      //КОТОРАЯ ВОЗВРАЩАЕТ СОСТОЧНИЕ КЛЕТКИ (КОРАБЛЬ, ВЫСТРЕЛ, РАНА)
+                this.computer.addChecks(point)
+                //логика добавления точки
                 this.computer.update()
-                //передаём ход
-                this.playerOrder = false
+
+                //проверяем был ли выстрел в корабль или нет
+                if (!this.computer.isSheepUnderPoint(point)) {
+                    //передаём ход
+                    this.playerOrder = false
+                }
             }
         }
 
         //Логика бота
         else {
-            //задаём рандомную точку
+            /*задаём рандомную точку
             const point = {
                 x: Math.floor(Math.random() *10),
                 y: Math.floor(Math.random() *10)
-            }
+            }*/
+
+            //получаем рандомную точку среди доступным непроверенных
+            const point = getRandomFrom(this.player.getUnknownFields())
 
             this.player.addChecks(point)
             //логика добавления точки
             this.player.update()
-            //передаём ход
-            this.playerOrder = true
+
+            //проверяем был ли выстрел в корабль или нет
+            if (!this.player.isSheepUnderPoint(point)) {
+                //передаём ход
+                this.playerOrder = true
+            }
+
         }
     }
 
