@@ -155,6 +155,6 @@ class Context {
     }
 
     executeStrategy(param) {
-        strategy.execute(param)
+        this.strategy.execute(param)
     }
 }

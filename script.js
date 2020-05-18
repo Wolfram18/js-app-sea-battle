@@ -84,7 +84,7 @@ function getRandomFrom (array) {
     return array[index]
 }
 
-//Один рандом
+//--------------------------------Кнопка----------------------------------
 var btnRandom = {
     x:100,
     y:430,

@@ -91,7 +91,7 @@ class Topology {
             //начальная точка для рисования
             context.moveTo(
                 this.offsetX + i * FIELD_SIZE,
-                this.offsetY
+                this.offsetY + FIELD_SIZE
             )
             //конечная точка для рисования    
             context.lineTo(
@@ -107,7 +107,7 @@ class Topology {
 
             //начальная точка для рисования
             context.moveTo(
-                this.offsetX,
+                this.offsetX + FIELD_SIZE,
                 this.offsetY  + i * FIELD_SIZE
             )
             //конечная точка для рисования    
@@ -138,7 +138,7 @@ class Topology {
             context.fillText(
                 i, 
                 this.offsetX + FIELD_SIZE * 0.5,
-                this.offsetY + i * FIELD_SIZE + FIELD_SIZE * 0.8
+                this.offsetY + i * FIELD_SIZE + FIELD_SIZE * 0.8 - 2
             )
         }
         return this

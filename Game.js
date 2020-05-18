@@ -6,13 +6,13 @@ class Game {
         //создание игрока
         this.player = new Topology({
             offsetX: 60,
-            offsetY: 90
+            offsetY: 85
         })
 
         //создание бота
         this.computer = new Topology({
-            offsetX: 600,
-            offsetY: 100,
+            offsetX: 590,
+            offsetY: 85,
             secret: true
         })
 
@@ -59,13 +59,13 @@ class Game {
             this.tickPlay(timestamp)
 
             if (this.computer.isEnd()) {
-                this.stage = 'end'
-                alert('Поздаравляю с победой!')
+                this.stage = 'completion'
+                alert('WIN')
             }
     
             else if (this.player.isEnd()) {
-                this.stage = 'end'
-                alert('Увы, попробуй еще раз.')
+                this.stage = 'completion'
+                alert('LOSE')
             }
         }
 
@@ -80,14 +80,14 @@ class Game {
 
     //стадия расстановки кораблей
     tickPreparation (timestamp) {
-        this.context.strategy.execute({player: this.player})
+        this.context.executeStrategy({player: this.player})
         this.player = this.context.strategy.player
         this.stage = this.context.strategy.stage
     }
 
     //стадия игры
     tickPlay (timestamp) {
-        this.context.strategy.execute({player: this.player, computer: this.computer, playerOrder: this.playerOrder})
+        this.context.executeStrategy({player: this.player, computer: this.computer, playerOrder: this.playerOrder})
         this.player = this.context.strategy.player
         this.computer = this.context.strategy.computer
         this.playerOrder = this.context.strategy.playerOrder
@@ -96,6 +96,5 @@ class Game {
 
     tickCompletion (timestamp) {
         //this.StrategyCompletion.execute()
-
     }
 }
