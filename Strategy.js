@@ -42,7 +42,7 @@ class StrategyPreparation extends Strategy {
             return
         }
 
-        this.player.drawSheep(context, sheep)
+        this.player.drawer.drawSheep(context, sheep)
 
         //добавление корабля, если в текущей итерации прожата левая кнопка мыши
         if (mouse.left && !mouse.pleft) {

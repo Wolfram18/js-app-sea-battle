@@ -100,13 +100,13 @@ var btnRandom = {
                 context.fillStyle = "darkblue";
                 context.fillRect(this.x, this.y, this.w, this.h);
                 context.fillStyle = "white";
-                context.fillText("Random",this.x+this.w/2 - context.measureText("Random").width/2,this.y+this.h/2+10 );
+                context.fillText("Random", this.x + this.w/2 - context.measureText("Random").width/2, this.y + this.h/2 + 10);
             break;
             default:
                 context.fillStyle = "blue";
                 context.fillRect(this.x,this.y,this.w,this.h);
                 context.fillStyle = "white";
-                context.fillText("Random",this.x+this.w/2 - context.measureText("Random").width/2,this.y+this.h/2+10 );
+                context.fillText("Random", this.x + this.w/2 - context.measureText("Random").width/2, this.y + this.h/2 + 10);
         }    
     }
 };
