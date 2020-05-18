@@ -16,11 +16,9 @@ class Game {
             secret: true
         })
 
-        //вынести в команду
+        this.context = new Context()
+
         this.computer.randoming()
-        //if нажали кнопку рандом то
-        //this.player.randoming()
-        //this.stage = "play"
 
         //регистрирует вызов функции перед обновлением экрана
         requestAnimationFrame(x => this.tick(x))
@@ -41,11 +39,23 @@ class Game {
 
         //если идет стадия подготовки, то выхывается функция расстановки кораблей
         if (this.stage === "preparation") {
+            const strategyPreparation = new StrategyPreparation({
+                player: this.player, 
+                stage: "preparation"
+            })
+            this.context.setStrategy(strategyPreparation)
             this.tickPreparation(timestamp)
         }
 
         //если идет стадия игры, то выхывается функция игры
         else if (this.stage === "play") {
+            const strategyPlay = new StrategyPlay({
+                player: this.player, 
+                computer: this.computer,
+                playerOrder: this.playerOrder,
+                stage: "play"
+            })
+            this.context.setStrategy(strategyPlay)
             this.tickPlay(timestamp)
 
             if (this.computer.isEnd()) {
@@ -70,106 +80,22 @@ class Game {
 
     //стадия расстановки кораблей
     tickPreparation (timestamp) {
-        //если мышь не над полем - выход
-        if (!this.player.isPointUnder(mouse)) {
-            return
-        }
-
-        //массив размеров кораблей
-        const sheepSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-        //текущий размер корабля
-        const sheepSize = sheepSizes[this.player.sheeps.length]
-        // получаем координаты клетки
-        const coordinats = this.player.getCoordinats(mouse)
-
-        const sheep = {
-            x: coordinats.x,
-            y: coordinats.y,
-            direct: mouse.s ? 0 : 1,
-            size: sheepSize
-        }
-
-        //если корабль вылезает за поле выход
-        if (!this.player.canStay(sheep)) {
-            return
-        }
-
-        this.player.drawSheep(context, sheep)
-
-        //добавление корабля, если в текущей итерации прожата левая кнопка мыши
-        if (mouse.left && !mouse.pleft) {
-            this.player.addSheeps(sheep)
-
-            //проверяем, что выставили все корабли
-            if (this.player.sheeps.length === 10) {
-                this.stage = "play"
-            }
-        }
+        this.context.strategy.execute({player: this.player})
+        this.player = this.context.strategy.player
+        this.stage = this.context.strategy.stage
     }
 
     //стадия игры
     tickPlay (timestamp) {
-        canvas.removeEventListener("mousedown", func) //Кнопка
-
-        //Логика игрока
-        if (this.playerOrder) {
-            //если мышь над полем бота
-            if (!this.computer.isPointUnder(mouse)) {
-                return
-            }
-
-            //получам координаы клетки
-            const point = this.computer.getCoordinats(mouse)
-
-            //добавить выстрел, если нажали левую кнопку мыши
-            if (mouse.left && !mouse.pleft) {
-                //нельзя стрелять в одну и ту же клетку
-                if (!this.computer.isChecked(point)) {
-
-                    this.computer.addChecks(point)
-                    //добавляем последний ход
-                    this.computer.addThelast(point)
-        
-                    //логика добавления точки
-                    this.computer.update()
-        
-                    //проверяем был ли выстрел в корабль или нет
-                    if (!this.computer.isSheepUnderPoint(point)) {
-                        //передаём ход
-                        this.playerOrder = false
-                    }
-                }
-            }
-        }
-
-        //Логика бота
-        else {
-            /*задаём рандомную точку
-            const point = {
-                x: Math.floor(Math.random() *10),
-                y: Math.floor(Math.random() *10)
-            }*/
-
-            //получаем рандомную точку среди доступным непроверенных
-            const point = getRandomFrom(this.player.getUnknownFields())
-
-            this.player.addChecks(point)
-            //добавляем последний ход
-            this.player.addThelast(point)
-
-            //логика добавления точки
-            this.player.update()
-
-            //проверяем был ли выстрел в корабль или нет
-            if (!this.player.isSheepUnderPoint(point)) {
-                //передаём ход
-                this.playerOrder = true
-            }
-
-        }
+        this.context.strategy.execute({player: this.player, computer: this.computer, playerOrder: this.playerOrder})
+        this.player = this.context.strategy.player
+        this.computer = this.context.strategy.computer
+        this.playerOrder = this.context.strategy.playerOrder
+        this.stage = this.context.strategy.stage
     }
 
     tickCompletion (timestamp) {
-        
+        //this.StrategyCompletion.execute()
+
     }
 }
