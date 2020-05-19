@@ -18,6 +18,8 @@ class StrategyPreparation extends Strategy {
     execute(param) {
         this.player = param.player
 
+        drawRules()
+
         //если мышь не над полем - выход
         if (!this.player.isPointUnder(mouse)) {
             return
@@ -137,10 +139,22 @@ class StrategyPlay extends Strategy {
 class StrategyCompletion extends Strategy {
     constructor(param) {
         super();
+        this.stage = param.stage
     }
 
-    execute() {
-
+    execute(param) {
+        if (this.stage === 'completionWin') {
+            const div = document.getElementById('Winner');
+            div.style.visibility = 'visible';
+            setTimeout("alert('Вы выиграли! Начать заново?')", 500)
+            setTimeout("window.location.reload()", 1000)
+        }
+        else if (this.stage === 'completionLose') {
+            var div = document.getElementById('Loser');
+            div.style.visibility = 'visible';
+            setTimeout("alert('Вы проиграли! Начать заново?')", 500)
+            setTimeout("window.location.reload()", 1000)
+        }
     }
 }
 

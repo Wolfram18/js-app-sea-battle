@@ -6,8 +6,6 @@ class Draw {
         this.offsetY = param.offsetY
     }
 
-
-
     //рисование клеток морского боя
     drawFields (context) {
         context.strokeStyle = "blue"
@@ -106,6 +104,7 @@ class Draw {
         return this
     }
 
+    //
     drawLightCheck(context, lightCheck) {
         context.fillStyle = 'red'
 

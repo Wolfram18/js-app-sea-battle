@@ -46,6 +46,37 @@ function drawRect (param) {
     }
 }
 
+//функция отрисовки тетрадного поля
+function drawGrid() {
+    context.strokeStyle = 'blue'
+    context.lineWidth = 0.5
+
+    //вертикльные линии клеток
+    for (let i = 0; i < canvas.width / CELL_SIZE; i++) {
+        context.beginPath() 
+        context.moveTo(i * CELL_SIZE, 0) 
+        context.lineTo(i * CELL_SIZE, canvas.height)
+        context.stroke()
+    }
+
+    //горизонтальные линии клеток
+    for (let i = 0; i < canvas.height / CELL_SIZE; i++) {
+        context.beginPath() 
+        context.moveTo(0, i * CELL_SIZE) 
+        context.lineTo(canvas.width, i * CELL_SIZE)
+        context.stroke()
+    }
+
+    //красная линия
+    context.strokeStyle ='red'
+    context.lineWidth = 2
+
+    context.beginPath()
+    context.moveTo(0, 75)
+    context.lineTo(canvas.width, 75)
+    context.stroke()
+}
+
 function drawRules() {
     context.strokeStyle = 'black'
     context.lineWidth = 1.7
@@ -84,37 +115,6 @@ function drawRules() {
 
     const x4 = "x4"
     context.fillText(x4,860,40)
-}
-
-//функция отрисовки тетрадного поля
-function drawGrid() {
-    context.strokeStyle = 'blue'
-    context.lineWidth = 0.5
-
-    //вертикльные линии клеток
-    for (let i = 0; i < canvas.width / CELL_SIZE; i++) {
-        context.beginPath() 
-        context.moveTo(i * CELL_SIZE, 0) 
-        context.lineTo(i * CELL_SIZE, canvas.height)
-        context.stroke()
-    }
-
-    //горизонтальные линии клеток
-    for (let i = 0; i < canvas.height / CELL_SIZE; i++) {
-        context.beginPath() 
-        context.moveTo(0, i * CELL_SIZE) 
-        context.lineTo(canvas.width, i * CELL_SIZE)
-        context.stroke()
-    }
-
-    //красная линия
-    context.strokeStyle ='red'
-    context.lineWidth = 2
-
-    context.beginPath()
-    context.moveTo(0, 75)
-    context.lineTo(canvas.width, 75)
-    context.stroke()
 }
 
 //возвращает случайный элемент из массива
@@ -168,6 +168,3 @@ canvas.addEventListener("mousemove", function(e) {
 function checkCollision(x, y, obj) {
     return x >= obj.x && x <= obj.x + obj.w && y >= obj.y && y <= obj.y + obj.h 
 }
-
-
- 

@@ -278,7 +278,7 @@ class Topology {
                 }
                 this.lightChecks.push(p1)
             }
-                   
+                    
         }
         
         /*for(const injury of this.injuries)

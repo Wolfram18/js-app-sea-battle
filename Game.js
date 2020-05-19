@@ -33,7 +33,6 @@ class Game {
         drawGrid()  
         btnRandom.draw(); //Кнопка
         
-
         //отрисовка поля, кораблей и выстрелов игрока и бота
         this.player.draw(context)
         this.computer.draw(context)
@@ -46,7 +45,7 @@ class Game {
             })
             this.context.setStrategy(strategyPreparation)
             this.tickPreparation(timestamp)
-            drawRules()
+            
         }
 
         //если идет стадия игры, то выхывается функция игры
@@ -61,26 +60,23 @@ class Game {
             this.tickPlay(timestamp)
 
             if (this.computer.isEnd()) {
-                this.stage = 'completion'    
-                var div = document.getElementById('Winner');
-                div.style.visibility = 'visible';
-                setTimeout("alert('Вы выиграли! Начать заново?')", 500)
-                setTimeout("window.location.reload()", 1000)
+                this.stage = "completionWin"
+                const strategyCompletion = new StrategyCompletion({
+                    stage: "completionWin"
+                })
+                this.context.setStrategy(strategyCompletion)
+                this.context.executeStrategy()
             }
     
             else if (this.player.isEnd()) {
-                this.stage = 'completion'
-                var div = document.getElementById('Loser');
-                div.style.visibility = 'visible';
-                setTimeout("alert('Вы проиграли! Начать заново?')", 500)
-                setTimeout("window.location.reload()", 1000)
+                this.stage = 'completionLose'
+                const strategyCompletion = new StrategyCompletion({
+                    stage: "completionLose"
+                })
+                this.context.setStrategy(strategyCompletion)
+                this.context.executeStrategy()
             }
         }
-
-        //если идет стадия завершения, то выхывается функция завершения
-        /*if (this.stage === "completion") {
-            this.tickCompletion(timestamp)
-        }*/
 
         //для отслеживания нажатия клавиши
         mouse.pleft = mouse.left
@@ -100,9 +96,5 @@ class Game {
         this.computer = this.context.strategy.computer
         this.playerOrder = this.context.strategy.playerOrder
         this.stage = this.context.strategy.stage
-    }
-
-    tickCompletion (timestamp) {
-        //this.StrategyCompletion.execute()
     }
 }
