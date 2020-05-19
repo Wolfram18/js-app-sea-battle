@@ -31,7 +31,6 @@ class Game {
         //60 раз в секунду обновлять canvas и заново рисовать drawGrid
         clearCanvas()
         drawGrid()  
-        btnRandom.draw(); //Кнопка
         
         //отрисовка поля, кораблей и выстрелов игрока и бота
         this.player.draw(context)

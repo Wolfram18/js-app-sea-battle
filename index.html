@@ -26,6 +26,36 @@
                 z-index: 9999;
                 visibility: hidden;
             }
+            a.button {
+                top: 443px;
+                left: 195px;
+                position:absolute;
+                font-family: arial,sans-serif;
+                font-size: 16px;
+                font-weight: bold;
+                color: darkblue;
+                text-decoration: none;
+                user-select: none;
+                padding: .2em 1.2em;
+                outline: none;
+                border: 1px solid rgba(0,0,0,.1);
+                border-radius: 2px;
+                background: rgb(245,245,245) linear-gradient(#f4f4f4, #f1f1f1);
+                transition: all .218s ease 0s;
+                z-index: 9999;
+            }
+            a.button:hover {
+                color: darkblue;
+                border: 1px solid rgb(198,198,198);
+                background: #f7f7f7 linear-gradient(#f7f7f7, #f1f1f1);
+                box-shadow: 0 1px 2px rgba(0,0,0,.1);
+            }
+            a.button:active {
+                color: darkblue;
+                border: 1px solid rgb(204,204,204);
+                background: rgb(238,238,238) linear-gradient(rgb(238,238,238), rgb(224,224,224));
+                box-shadow: 0 1px 2px rgba(0,0,0,.1) inset;
+            }
             canvas { border: 1px solid black; } 
         </style>
     </head>
@@ -35,6 +65,7 @@
         </audio>   
         <div id="Winner"></div>
         <div id="Loser"></div>
+        <a href="#" class="button" id="Button">Random</a>
             <!--<img name ="img" src ="static/winner.png" id="img"/>-->
         <!-- <embed src="static/song.mp3" style="width:0px;height:0px"></embed> -->
         <canvas></canvas>

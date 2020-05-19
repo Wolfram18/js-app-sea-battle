@@ -18,7 +18,19 @@ class StrategyPreparation extends Strategy {
     execute(param) {
         this.player = param.player
 
+        //Правила
         drawRules()
+
+        //Кнопка
+        var a = document.getElementById('Button');
+
+        function func(event) {
+            game.player.randoming()
+            game.stage = "play" 
+            a.style.visibility = "hidden" 
+        }
+
+        a.addEventListener("mousedown", func);
 
         //если мышь не над полем - выход
         if (!this.player.isPointUnder(mouse)) {
@@ -72,9 +84,7 @@ class StrategyPlay extends Strategy {
         this.player = param.player
         this.computer = param.computer
         this.playerOrder = param.playerOrder
-
-        canvas.removeEventListener("mousedown", func) //Кнопка
-
+        
         //Логика игрока
         if (this.playerOrder) {
             //если мышь над полем бота
@@ -91,12 +101,12 @@ class StrategyPlay extends Strategy {
                 if (!this.computer.isChecked(point)) {
 
                     this.computer.addChecks(point)
-                    this.computer.LightCheckArondInjury (point);
                     //добавляем последний ход
                     this.computer.addThelast(point)
         
                     //логика добавления точки
                     this.computer.update()
+                    this.computer.addKills()
         
                     //проверяем был ли выстрел в корабль или нет
                     if (!this.computer.isSheepUnderPoint(point)) {
@@ -124,6 +134,7 @@ class StrategyPlay extends Strategy {
 
             //логика добавления точки
             this.player.update()
+            this.player.addKills()
 
             //проверяем был ли выстрел в корабль или нет
             if (!this.player.isSheepUnderPoint(point)) {

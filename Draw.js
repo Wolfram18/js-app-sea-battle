@@ -104,21 +104,47 @@ class Draw {
         return this
     }
 
-    //
-    drawLightCheck(context, lightCheck) {
-        context.fillStyle = 'red'
+    drawCircle(pointX, pointY) {
+        context.fillStyle = 'grey'
 
-        context.beginPath()
-        context.arc(
-            this.offsetX + check.x * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по x
-            this.offsetY + check.y * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по y
-            3, //радиус
-            0, 
-            Math.PI * 2
-        )
-        context.fill() //заливка
+        if (pointX > -1 && pointX < 10 && pointY > -1 && pointY < 10) {
+            context.beginPath()
+            context.arc(
+                this.offsetX + pointX * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по x
+                this.offsetY + pointY * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по y
+                3, //радиус
+                0, 
+                Math.PI * 2
+            )
+            context.fill() //заливка
+        }
+    }
 
-        return this
+    drawCheckAroundKills(context, sheep) {
+        if(sheep.direct === 0) {
+            this.drawCircle(sheep.x - 1 , sheep.y)
+
+            let i = -1
+            for (let x = sheep.x; x <= sheep.x + sheep.size + 1; x++) {
+                this.drawCircle(sheep.x + i , sheep.y - 1)
+                this.drawCircle(sheep.x + i , sheep.y + 1)
+
+                i++
+            }
+            this.drawCircle(sheep.x + sheep.size, sheep.y)
+        }
+        else {
+            this.drawCircle(sheep.x , sheep.y - 1)
+
+            let i = -1
+            for (let y = sheep.y; y <= sheep.y + sheep.size + 1; y++) {
+                this.drawCircle(sheep.x - 1 , sheep.y + i)
+                this.drawCircle(sheep.x + 1 , sheep.y + i)
+
+                i++
+            }
+            this.drawCircle(sheep.x, sheep.y + sheep.size)
+        }
     }
 
     //отрисовка ранений

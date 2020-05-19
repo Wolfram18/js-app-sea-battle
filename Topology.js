@@ -13,9 +13,8 @@ class Topology {
 
         this.sheeps = []
         this.checks = []
-        this.lightChecks = []
-        this.kills = []
         this.injuries = []
+        this.kills = []
         this.last = {}
     }
 
@@ -80,8 +79,8 @@ class Topology {
             this.drawer.drawInjury(context, injury)
         }
 
-        for(const lightCheck of this.lightChecks) {
-            this.drawer.drawLightCheck(context, lightCheck)
+        for(const sheep of this.kills) {
+            this.drawer.drawCheckAroundKills(context, sheep)
         }
 
         this.drawer.drawLast(context, this.last)
@@ -239,6 +238,15 @@ class Topology {
         return map
     }
 
+    
+    isCheckedInjury(point) {
+        const flag = this.injuries.find(injury => injury.x === point.x && injury.y === point.y)
+        if (flag) {
+            return true
+        } 
+        return false
+    }
+
     update () {
         //надо убрать возможность добавления в массив повторных точек
         this.checks = this.checks
@@ -258,55 +266,15 @@ class Topology {
         //проверяем, является ли точка, которую ранили - положением корабля
         for (const check of this.checks) {
             if (map[check.y][check.x]) {
-                this.injuries.push(check)
+                if (!this.isCheckedInjury(check)) {
+                    this.injuries.push(check)
+                }
 
                 const index = this.checks.indexOf(check)
                 this.checks.splice(index, 1)
             }
         }
     }
-
-    LightCheckArondInjury (point) {
-
-        const map = this.getSheepsMap()
-
-        if(this.injuries.includes(point)) {
-            if (!map[point.y][point.x + 1]) {
-                const p1 = {
-                    x: point.x + 1,
-                    y: point.y
-                }
-                this.lightChecks.push(p1)
-            }
-                    
-        }
-        
-        /*for(const injury of this.injuries)
-        {
-            const point = this.injuries.getCoordinats(mouse)
-            if (point.x + 1 !== sheep.x) {
-                const p1 = {
-                    x: point.x + 1,
-                    y: point.y
-                }
-                const p2 = {
-                    x: point.x + 1,
-                    y: point.y + 1
-                }
-                const p3 = {
-                    x: point.x + 1,
-                    y: point.y - 1
-                }
-                this.lightChecks.push(p1)
-                this.lightChecks.push(p2)
-                this.lightChecks.push(p3)
-            }
-            else {
-                return
-            }
-        }*/
-    }
-
 
     //возвращаем true, если в ячейке стоит корабль
     isSheepUnderPoint (point) {
@@ -348,8 +316,49 @@ class Topology {
                 }
             }
         }
-
         return unknownFields
+    }
+
+    addKills() {
+        for (const sheep of this.sheeps) {
+            if (sheep.direct === 0) {
+                const flag = sheep.size
+                let i = 0
+                console.log(this.injuries)
+                for (let x = sheep.x; x < sheep.x + sheep.size; x++) {
+                    for (const injury of this.injuries) {
+                        if (injury.x === x && injury.y === sheep.y) {
+                            i++
+                            
+                        }
+                    }
+                }
+                if (flag === i) {
+                    if (!this.kills.includes(sheep)) {
+                        this.kills.push(sheep)
+                        //console.log(this.kills)
+                    }
+                }
+            }
+            else {
+                const flag = sheep.size
+                let i = 0
+                console.log(this.injuries)
+                for (let y = sheep.y; y < sheep.y + sheep.size; y++) {
+                    for (const injury of this.injuries) {
+                        if (injury.y === y && injury.x === sheep.x) {
+                            i++
+                        }
+                    }
+                }
+                if (flag === i) {
+                    if (!this.kills.includes(sheep)) {
+                        this.kills.push(sheep)
+                        //console.log(this.kills)
+                    }         
+                }
+            }
+        }
     }
 
     //проверяет убиты ли все корабли
