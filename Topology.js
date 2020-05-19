@@ -16,6 +16,7 @@ class Topology {
         this.injuries = []
         this.kills = []
         this.last = {}
+        this.score = {}
     }
 
     //добавление кораблей
@@ -59,6 +60,15 @@ class Topology {
         return this
     }
 
+    getScore(x, y) {
+        this.score = {
+            x: x,
+            y: y,
+            count: this.kills.length
+        }
+        console.log('this.kills.length: ', this.kills.length);
+    }
+
     //метод абстракции, делегирует работу связанному методу реализации
     draw (context) {
         this.drawer.drawFields(context)
@@ -84,6 +94,8 @@ class Topology {
         }
 
         this.drawer.drawLast(context, this.last)
+
+        this.drawer.drawScore(context, this.score)
 
         return this
     }

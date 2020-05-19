@@ -234,4 +234,15 @@ class Draw {
 
         return this
     }
+
+    drawScore(context, score) {
+        context.textAlign = "center"
+        context.font = "35px comics sans"
+        context.fillStyle = "black";
+    
+        context.fillText(":", 500, 250)
+
+        context.fillText(score.count, score.x, score.y)
+    }
 }
+

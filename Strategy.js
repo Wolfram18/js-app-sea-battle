@@ -12,14 +12,20 @@ class StrategyPreparation extends Strategy {
     constructor(param) {
         super();
         this.player = param.player
+        this.computer = param.computer
         this.stage = param.stage
     }
 
     execute(param) {
         this.player = param.player
+        this.computer = param.computer
 
         //Правила
         drawRules()
+
+        //Счёт
+        this.computer.getScore(520, 250)
+        this.player.getScore(480,250)
 
         //Кнопка
         var a = document.getElementById('Button');
@@ -27,7 +33,6 @@ class StrategyPreparation extends Strategy {
         function func(event) {
             game.player.randoming()
             game.stage = "play" 
-            a.style.visibility = "hidden" 
         }
 
         a.addEventListener("mousedown", func);
@@ -84,6 +89,9 @@ class StrategyPlay extends Strategy {
         this.player = param.player
         this.computer = param.computer
         this.playerOrder = param.playerOrder
+
+        var a = document.getElementById('Button');
+        a.style.visibility = "hidden" 
         
         //Логика игрока
         if (this.playerOrder) {
@@ -106,7 +114,10 @@ class StrategyPlay extends Strategy {
         
                     //логика добавления точки
                     this.computer.update()
+
                     this.computer.addKills()
+
+                    this.computer.getScore(520, 250)
         
                     //проверяем был ли выстрел в корабль или нет
                     if (!this.computer.isSheepUnderPoint(point)) {
@@ -134,7 +145,10 @@ class StrategyPlay extends Strategy {
 
             //логика добавления точки
             this.player.update()
+
             this.player.addKills()
+
+            this.player.getScore(480,250)
 
             //проверяем был ли выстрел в корабль или нет
             if (!this.player.isSheepUnderPoint(point)) {

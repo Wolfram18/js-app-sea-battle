@@ -40,6 +40,7 @@ class Game {
         if (this.stage === "preparation") {
             const strategyPreparation = new StrategyPreparation({
                 player: this.player, 
+                computer: this.computer,
                 stage: "preparation"
             })
             this.context.setStrategy(strategyPreparation)
@@ -83,8 +84,9 @@ class Game {
 
     //стадия расстановки кораблей
     tickPreparation (timestamp) {
-        this.context.executeStrategy({player: this.player})
+        this.context.executeStrategy({player: this.player, computer: this.computer,})
         this.player = this.context.strategy.player
+        this.computer = this.context.strategy.computer
         this.stage = this.context.strategy.stage
     }
 
