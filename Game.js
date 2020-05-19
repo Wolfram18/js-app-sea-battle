@@ -30,14 +30,15 @@ class Game {
 
         //60 раз в секунду обновлять canvas и заново рисовать drawGrid
         clearCanvas()
-        drawGrid()
+        drawGrid()  
         btnRandom.draw(); //Кнопка
+        
 
         //отрисовка поля, кораблей и выстрелов игрока и бота
         this.player.draw(context)
         this.computer.draw(context)
 
-        //если идет стадия подготовки, то выхывается функция расстановки кораблей
+        //если идет стадия подготовки, то вызывается функция расстановки кораблей
         if (this.stage === "preparation") {
             const strategyPreparation = new StrategyPreparation({
                 player: this.player, 
@@ -45,6 +46,7 @@ class Game {
             })
             this.context.setStrategy(strategyPreparation)
             this.tickPreparation(timestamp)
+            drawRules()
         }
 
         //если идет стадия игры, то выхывается функция игры
@@ -59,13 +61,19 @@ class Game {
             this.tickPlay(timestamp)
 
             if (this.computer.isEnd()) {
-                this.stage = 'completion'
-                alert('WIN')
+                this.stage = 'completion'    
+                var div = document.getElementById('Winner');
+                div.style.visibility = 'visible';
+                setTimeout("alert('Вы выиграли! Начать заново?')", 500)
+                setTimeout("window.location.reload()", 1000)
             }
     
             else if (this.player.isEnd()) {
                 this.stage = 'completion'
-                alert('LOSE')
+                var div = document.getElementById('Loser');
+                div.style.visibility = 'visible';
+                setTimeout("alert('Вы проиграли! Начать заново?')", 500)
+                setTimeout("window.location.reload()", 1000)
             }
         }
 

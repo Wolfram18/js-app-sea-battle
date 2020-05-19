@@ -80,7 +80,7 @@ class StrategyPlay extends Strategy {
                 return
             }
 
-            //получам координаы клетки
+            //получам координаты клетки
             const point = this.computer.getCoordinats(mouse)
 
             //добавить выстрел, если нажали левую кнопку мыши
@@ -89,6 +89,7 @@ class StrategyPlay extends Strategy {
                 if (!this.computer.isChecked(point)) {
 
                     this.computer.addChecks(point)
+                    this.computer.LightCheckArondInjury (point);
                     //добавляем последний ход
                     this.computer.addThelast(point)
         

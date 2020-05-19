@@ -46,6 +46,46 @@ function drawRect (param) {
     }
 }
 
+function drawRules() {
+    context.strokeStyle = 'black'
+    context.lineWidth = 1.7
+
+    context.beginPath()
+    context.rect(300, 20, 120, 30) 
+    context.stroke()
+
+    context.beginPath()
+    context.rect(500, 20, 90, 30) 
+    context.stroke()
+
+    context.beginPath()
+    context.rect(670, 20, 60, 30) 
+    context.stroke()
+
+    context.beginPath()
+    context.rect(800, 20, 30, 30) 
+    context.stroke()
+
+    context.textAlign = "center"
+    context.font = "30px comics sans"
+    context.fillStyle = "black";
+
+    const text = "Расставьте корабли:"
+    context.fillText(text, 150, 40)
+
+    const x1 = "x1"
+    context.fillText(x1,450,40)
+
+    const x2 = "x2"
+    context.fillText(x2,620,40)
+
+    const x3 = "x3"
+    context.fillText(x3,760,40)
+
+    const x4 = "x4"
+    context.fillText(x4,860,40)
+}
+
 //функция отрисовки тетрадного поля
 function drawGrid() {
     context.strokeStyle = 'blue'
@@ -128,3 +168,6 @@ canvas.addEventListener("mousemove", function(e) {
 function checkCollision(x, y, obj) {
     return x >= obj.x && x <= obj.x + obj.w && y >= obj.y && y <= obj.y + obj.h 
 }
+
+
+ 

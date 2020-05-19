@@ -6,6 +6,8 @@ class Draw {
         this.offsetY = param.offsetY
     }
 
+
+
     //рисование клеток морского боя
     drawFields (context) {
         context.strokeStyle = "blue"
@@ -71,7 +73,7 @@ class Draw {
         return this
     }
 
-        //рисование корабля
+    //рисование корабля
     drawSheep (context, sheep) {
         context.fillStyle = 'rgba(0, 0, 0, 0.75)'
 
@@ -90,6 +92,22 @@ class Draw {
     //рисование точки (выстрела)
     drawCheck(context, check) {
         context.fillStyle = 'black'
+
+        context.beginPath()
+        context.arc(
+            this.offsetX + check.x * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по x
+            this.offsetY + check.y * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по y
+            3, //радиус
+            0, 
+            Math.PI * 2
+        )
+        context.fill() //заливка
+
+        return this
+    }
+
+    drawLightCheck(context, lightCheck) {
+        context.fillStyle = 'red'
 
         context.beginPath()
         context.arc(

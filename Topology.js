@@ -13,6 +13,7 @@ class Topology {
 
         this.sheeps = []
         this.checks = []
+        this.lightChecks = []
         this.kills = []
         this.injuries = []
         this.last = {}
@@ -77,6 +78,10 @@ class Topology {
 
         for(const injury of this.injuries) {
             this.drawer.drawInjury(context, injury)
+        }
+
+        for(const lightCheck of this.lightChecks) {
+            this.drawer.drawLightCheck(context, lightCheck)
         }
 
         this.drawer.drawLast(context, this.last)
@@ -260,6 +265,48 @@ class Topology {
             }
         }
     }
+
+    LightCheckArondInjury (point) {
+
+        const map = this.getSheepsMap()
+
+        if(this.injuries.includes(point)) {
+            if (!map[point.y][point.x + 1]) {
+                const p1 = {
+                    x: point.x + 1,
+                    y: point.y
+                }
+                this.lightChecks.push(p1)
+            }
+                   
+        }
+        
+        /*for(const injury of this.injuries)
+        {
+            const point = this.injuries.getCoordinats(mouse)
+            if (point.x + 1 !== sheep.x) {
+                const p1 = {
+                    x: point.x + 1,
+                    y: point.y
+                }
+                const p2 = {
+                    x: point.x + 1,
+                    y: point.y + 1
+                }
+                const p3 = {
+                    x: point.x + 1,
+                    y: point.y - 1
+                }
+                this.lightChecks.push(p1)
+                this.lightChecks.push(p2)
+                this.lightChecks.push(p3)
+            }
+            else {
+                return
+            }
+        }*/
+    }
+
 
     //возвращаем true, если в ячейке стоит корабль
     isSheepUnderPoint (point) {

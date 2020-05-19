@@ -5,12 +5,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Морской бой</title>
-        <style> canvas { border: 1px solid black; } </style>
+        <style>
+            #Winner{
+                position:absolute;
+                top: 150px;
+                left: 380px;
+                width: 250px;
+                height: 203px;
+                background:transparent url(static/win.png);
+                z-index: 9999;
+                visibility: hidden;
+            }
+            #Loser{
+                position:absolute;
+                top: 150px;
+                left: 350px;
+                width: 320px;
+                height: 240px;
+                background:transparent url(static/failed.png);
+                z-index: 9999;
+                visibility: hidden;
+            }
+            canvas { border: 1px solid black; } 
+         </style>
     </head>
     <body>
         <audio autoplay>
             <source src="static/song.mp3" loop="loop" type="audio/mpeg">
-        </audio>
+        </audio>   
+        <div id="Winner"></div>
+        <div id="Loser"></div>
+            <!--<img name ="img" src ="static/winner.png" id="img"/>-->
         <!-- <embed src="static/song.mp3" style="width:0px;height:0px"></embed> -->
         <canvas></canvas>
         <!--подключение скриптов-->
@@ -22,3 +47,7 @@
         <script src="script.js"></script>
     </body>
 </html>
+
+
+
+  
