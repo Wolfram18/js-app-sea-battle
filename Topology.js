@@ -66,7 +66,6 @@ class Topology {
             y: y,
             count: this.kills.length
         }
-        console.log('this.kills.length: ', this.kills.length);
     }
 
     //метод абстракции, делегирует работу связанному методу реализации
@@ -336,7 +335,6 @@ class Topology {
             if (sheep.direct === 0) {
                 const flag = sheep.size
                 let i = 0
-                console.log(this.injuries)
                 for (let x = sheep.x; x < sheep.x + sheep.size; x++) {
                     for (const injury of this.injuries) {
                         if (injury.x === x && injury.y === sheep.y) {
@@ -348,14 +346,12 @@ class Topology {
                 if (flag === i) {
                     if (!this.kills.includes(sheep)) {
                         this.kills.push(sheep)
-                        //console.log(this.kills)
                     }
                 }
             }
             else {
                 const flag = sheep.size
                 let i = 0
-                console.log(this.injuries)
                 for (let y = sheep.y; y < sheep.y + sheep.size; y++) {
                     for (const injury of this.injuries) {
                         if (injury.y === y && injury.x === sheep.x) {
@@ -366,7 +362,6 @@ class Topology {
                 if (flag === i) {
                     if (!this.kills.includes(sheep)) {
                         this.kills.push(sheep)
-                        //console.log(this.kills)
                     }         
                 }
             }

@@ -50,14 +50,27 @@ class Game {
 
         //если идет стадия игры, то выхывается функция игры
         else if (this.stage === "play") {
-            const strategyPlay = new StrategyPlay({
-                player: this.player, 
-                computer: this.computer,
+            const strategyPlayPlayer = new StrategyPlayPlayer({
                 playerOrder: this.playerOrder,
-                stage: "play"
+                stage: "play",
+                topology: this.computer
             })
-            this.context.setStrategy(strategyPlay)
-            this.tickPlay(timestamp)
+            const strategyPlayBot = new StrategyPlayBot({
+                playerOrder: this.playerOrder,
+                stage: "play",
+                topology: this.player
+            })
+
+            //Логика игрока
+            if (this.playerOrder) { 
+                this.context.setStrategy(strategyPlayPlayer)
+                this.tickPlayPlayer(timestamp)
+            }
+            //Логика бота
+            else { 
+                this.context.setStrategy(strategyPlayBot)
+                this.tickPlayBot(timestamp)
+            }
 
             if (this.computer.isEnd()) {
                 this.stage = "completionWin"
@@ -91,10 +104,17 @@ class Game {
     }
 
     //стадия игры
-    tickPlay (timestamp) {
-        this.context.executeStrategy({player: this.player, computer: this.computer, playerOrder: this.playerOrder})
-        this.player = this.context.strategy.player
-        this.computer = this.context.strategy.computer
+    tickPlayPlayer (timestamp) {
+        this.context.executeStrategy({playerOrder: this.playerOrder, topology: this.computer,})
+        this.computer = this.context.strategy.topology
+        this.playerOrder = this.context.strategy.playerOrder
+        this.stage = this.context.strategy.stage
+    }
+
+    //стадия игры
+    tickPlayBot (timestamp) {
+        this.context.executeStrategy({playerOrder: this.playerOrder, topology: this.player,})
+        this.player = this.context.strategy.topology
         this.playerOrder = this.context.strategy.playerOrder
         this.stage = this.context.strategy.stage
     }

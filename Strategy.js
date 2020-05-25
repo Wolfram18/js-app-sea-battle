@@ -79,83 +79,114 @@ class StrategyPreparation extends Strategy {
 class StrategyPlay extends Strategy {
     constructor(param) {
         super();
-        this.player = param.player
-        this.computer = param.computer
         this.playerOrder = param.playerOrder
         this.stage = param.stage
+        this.topology = param.topology
     }
 
     execute(param) {
-        this.player = param.player
-        this.computer = param.computer
+        this.opening(param)
+        const point = this.getPoint()
+        this.addPoint(point)
+    }
+
+    opening(param) {
         this.playerOrder = param.playerOrder
+        this.topology = param.topology
 
         var a = document.getElementById('Button');
         a.style.visibility = "hidden" 
+    }
+
+    getPoint() {
+        //получам координаты клетки
+        const point = this.topology.getCoordinats(mouse)
+        return point
+    }
+
+    addPoint(point) {}
+}
+
+class StrategyPlayPlayer extends StrategyPlay {
+    constructor(param) {
+        super(param);
+        this.playerOrder = param.playerOrder
+        this.stage = param.stage
+        this.topology = param.topology
+    }
+
+    addPoint() {
+        //если мышь над полем бота
+        if (!this.topology.isPointUnder(mouse)) {
+            return
+        }
+        //получам координаты клетки
+        const point = this.topology.getCoordinats(mouse)
+
+        //добавить выстрел, если нажали левую кнопку мыши
+        if (mouse.left && !mouse.pleft) {
+            //нельзя стрелять в одну и ту же клетку
+            if (!this.topology.isChecked(point)) {
+
+                this.topology.addChecks(point)
+                //добавляем последний ход
+                this.topology.addThelast(point)
+
+                //логика добавления точки
+                this.topology.update()
+
+                this.topology.addKills()
+
+                this.topology.getScore(520, 250)
         
-        //Логика игрока
-        if (this.playerOrder) {
-            //если мышь над полем бота
-            if (!this.computer.isPointUnder(mouse)) {
-                return
-            }
-
-            //получам координаты клетки
-            const point = this.computer.getCoordinats(mouse)
-
-            //добавить выстрел, если нажали левую кнопку мыши
-            if (mouse.left && !mouse.pleft) {
-                //нельзя стрелять в одну и ту же клетку
-                if (!this.computer.isChecked(point)) {
-
-                    this.computer.addChecks(point)
-                    //добавляем последний ход
-                    this.computer.addThelast(point)
-        
-                    //логика добавления точки
-                    this.computer.update()
-
-                    this.computer.addKills()
-
-                    this.computer.getScore(520, 250)
-        
-                    //проверяем был ли выстрел в корабль или нет
-                    if (!this.computer.isSheepUnderPoint(point)) {
-                        //передаём ход
-                        this.playerOrder = false
-                    }
+                //проверяем был ли выстрел в корабль или нет
+                if (!this.topology.isSheepUnderPoint(point)) {
+                    //передаём ход
+                    this.playerOrder = false
                 }
             }
         }
+    }
 
-        //Логика бота
-        else {
-            /*задаём рандомную точку
-            const point = {
-                x: Math.floor(Math.random() *10),
-                y: Math.floor(Math.random() *10)
-            }*/
+}
 
-            //получаем рандомную точку среди доступным непроверенных
-            const point = getRandomFrom(this.player.getUnknownFields())
+class StrategyPlayBot extends StrategyPlay {
+    constructor(param) {
+        super(param);
+        this.playerOrder = param.playerOrder
+        this.stage = param.stage
+        this.topology = param.topology
+    }
 
-            this.player.addChecks(point)
-            //добавляем последний ход
-            this.player.addThelast(point)
+    getPoint() {
+        /*задаём рандомную точку
+        const point = {
+            x: Math.floor(Math.random() *10),
+            y: Math.floor(Math.random() *10)
+        }*/
 
-            //логика добавления точки
-            this.player.update()
+        //получаем рандомную точку среди доступным непроверенных
+        const point = getRandomFrom(this.topology.getUnknownFields())
 
-            this.player.addKills()
+        return point
+    }
 
-            this.player.getScore(480,250)
+    addPoint(point) {
+        this.topology.addChecks(point)
+        //добавляем последний ход
+        this.topology.addThelast(point)
 
-            //проверяем был ли выстрел в корабль или нет
-            if (!this.player.isSheepUnderPoint(point)) {
-                //передаём ход
-                this.playerOrder = true
-            }
+        //логика добавления точки
+        this.topology.update()
 
+        this.topology.addKills()
+
+        this.topology.getScore(480,250)
+
+        //проверяем был ли выстрел в корабль или нет
+        if (!this.topology.isSheepUnderPoint(point)) {
+            //передаём ход
+            this.playerOrder = true
         }
     }
 }
@@ -198,3 +229,4 @@ class Context {
         this.strategy.execute(param)
     }
 }
+
