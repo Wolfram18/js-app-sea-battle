@@ -104,46 +104,62 @@ class Draw {
         return this
     }
 
-    drawCircle(pointX, pointY) {
-        context.fillStyle = 'grey'
+    addChecks(point, checks) {
+        //проверяем не был ли ранее добавлен данный выстрел, 
+        //если не был, то добавляем в checks
+        if(!checks.includes(point)) {
+            checks.push(point)
+        }
+        return checks
+    }
+
+    //проверяем не был ли ранее добавлен данный выстрел
+    isChecked(point, checks) {
+        const flag = checks.find(check => check.x === point.x && check.y === point.y)
+        if (flag) {
+            return true
+        } 
+        return false
+    }
+
+    drawCircle(pointX, pointY, checks) {
 
         if (pointX > -1 && pointX < 10 && pointY > -1 && pointY < 10) {
-            context.beginPath()
-            context.arc(
-                this.offsetX + pointX * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по x
-                this.offsetY + pointY * FIELD_SIZE + FIELD_SIZE * 1.5, //координата центра по y
-                3, //радиус
-                0, 
-                Math.PI * 2
-            )
-            context.fill() //заливка
+            const point = {
+                x: pointX,
+                y: pointY
+            }
+            if (!this.isChecked(point, checks)) {
+                this.addChecks(point, checks)
+                console.log(checks)
+            }
         }
     }
 
-    drawCheckAroundKills(context, sheep) {
+    drawCheckAroundKills(context, sheep, checks) {
         if(sheep.direct === 0) {
-            this.drawCircle(sheep.x - 1 , sheep.y)
+            this.drawCircle(sheep.x - 1 , sheep.y, checks)
 
             let i = -1
             for (let x = sheep.x; x <= sheep.x + sheep.size + 1; x++) {
-                this.drawCircle(sheep.x + i , sheep.y - 1)
-                this.drawCircle(sheep.x + i , sheep.y + 1)
+                this.drawCircle(sheep.x + i , sheep.y - 1, checks)
+                this.drawCircle(sheep.x + i , sheep.y + 1, checks)
 
                 i++
             }
-            this.drawCircle(sheep.x + sheep.size, sheep.y)
+            this.drawCircle(sheep.x + sheep.size, sheep.y, checks)
         }
         else {
-            this.drawCircle(sheep.x , sheep.y - 1)
+            this.drawCircle(sheep.x , sheep.y - 1, checks)
 
             let i = -1
             for (let y = sheep.y; y <= sheep.y + sheep.size + 1; y++) {
-                this.drawCircle(sheep.x - 1 , sheep.y + i)
-                this.drawCircle(sheep.x + 1 , sheep.y + i)
+                this.drawCircle(sheep.x - 1 , sheep.y + i, checks)
+                this.drawCircle(sheep.x + 1 , sheep.y + i, checks)
 
                 i++
             }
-            this.drawCircle(sheep.x, sheep.y + sheep.size)
+            this.drawCircle(sheep.x, sheep.y + sheep.size, checks)
         }
     }
 

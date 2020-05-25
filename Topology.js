@@ -89,7 +89,7 @@ class Topology {
         }
 
         for(const sheep of this.kills) {
-            this.drawer.drawCheckAroundKills(context, sheep)
+            this.drawer.drawCheckAroundKills(context, sheep, this.checks)
         }
 
         this.drawer.drawLast(context, this.last)
