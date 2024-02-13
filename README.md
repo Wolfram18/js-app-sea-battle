@@ -1,5 +1,5 @@
 # Strategy type guessing single player game called "Sea Battle"
-Demo: https://wolfram18.github.io/JSProject-SeaBattle/
+Demo: [https://wolfram18.github.io/JSProject-SeaBattle/](https://wolfram18.github.io/js-app-sea-battle/)
 ## Stage: Preparation
 Place your ships manually or by pressing button "Random" (rotate ship via mouse wheel).
 ![Preparation](Images/Preparation.png)
